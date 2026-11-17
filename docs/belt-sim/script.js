@@ -1,7 +1,7 @@
 /* DOMに依存しないモデル。今後の制御器追加はcommandを拡張する。 */
 (function (root) {
   'use strict';
-  const defaults = { M: 2, b: 1, r: .3, Fmax: 40, kp: 128, kd: 11.8, kx: 128, kv: 11.8 };
+  const defaults = { M: 2, b: 1, r: .5, Fmax: 40, kp: 128, kd: 11.8, kx: 128, kv: 11.8 };
   const limits = { M: [.2, 20], b: [0, 20], r: [0, 1], Fmax: [1, 100], kp: [0, 500], kd: [0, 100], kx: [0, 500], kv: [0, 100] };
   const dt = .001, duration = 5;
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));

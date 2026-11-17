@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="ja">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ベル直シミュレーター | robo-tat</title><link rel="stylesheet" href="./style.css?v=0d1286e73a38"><script defer src="./script.js?v=fa42c01478fd"></script></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ベル直シミュレーター | robotat</title><link rel="stylesheet" href="./style.css?v=0d1286e73a38"><script defer src="./script.js?v=fa42c01478fd"></script></head>
 <body>
-<header><a class="brand" href="../index.html"><svg width="46" height="27" viewBox="0 0 46 27" aria-hidden="true"><path d="M10 5h26a9 9 0 0 1 0 18H10a9 9 0 0 1 0-18Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="10" cy="14" r="3" fill="currentColor"/><circle cx="36" cy="14" r="5" fill="none" stroke="currentColor" stroke-width="2"/></svg>robo-tat</a><a class="tag" href="../index.html">← 教材一覧</a></header>
+<header><a class="brand" href="../index.html"><svg width="46" height="27" viewBox="0 0 46 27" aria-hidden="true"><path d="M10 5h26a9 9 0 0 1 0 18H10a9 9 0 0 1 0-18Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="10" cy="14" r="3" fill="currentColor"/><circle cx="36" cy="14" r="5" fill="none" stroke="currentColor" stroke-width="2"/></svg>robotat</a><a class="tag" href="../index.html">← 教材一覧</a></header>
 <main>
 <section class="intro"><h1>ベル直シミュレーター</h1><span class="eyebrow">BELT DRIVE / POSITION CONTROL</span></section>
 <div class="layout"><aside class="panel controls"><div class="section-title"><h2>パラメータ</h2><button id="defaults" class="text-button">初期値に戻す</button></div>
 <label class="field-title" for="mode">制御方法</label><select id="mode"><option value="pd">古典制御 / PD制御</option><option value="sf">現代制御 / 状態フィードバック</option></select>
 <h3>加速台と目標</h3><div id="plant-controls"></div><h3 id="gain-title">PD制御のゲイン</h3><div id="gain-controls"></div>
 <div class="compare-box"><label><input id="compare" type="checkbox" checked> 両方式の応答を重ねる</label><button id="equalize" class="secondary">選択中のゲインに揃える</button><p id="gain-summary"></p></div><p id="input-error" role="alert"></p></aside>
-<div class="results"><section class="panel stage-panel"><div class="section-title"><h2>加速台</h2><span class="badge">ストローク 0–1 m</span></div><div class="readings"><div><span>位置</span><strong id="position">0.000 <small>m</small></strong></div><div><span>速度</span><strong id="velocity">0.000 <small>m/s</small></strong></div><div><span>実入力</span><strong id="force">0.00 <small>N</small></strong></div></div><div class="track-area"><div id="target" class="target"><span>目標 r</span></div><div class="belt"></div><div id="carriage" class="carriage"><span>台車</span><i></i><i></i></div><div class="ticks"><span>0 m</span><span>0.5 m</span><span>1 m</span></div></div>
+<div class="results"><section class="panel stage-panel"><div class="section-title"><h2>シミュレーター</h2><span class="badge">ストローク 0–1 m</span></div><div class="readings"><div><span>位置</span><strong id="position">0.000 <small>m</small></strong></div><div><span>速度</span><strong id="velocity">0.000 <small>m/s</small></strong></div><div><span>実入力</span><strong id="force">0.00 <small>N</small></strong></div></div><div class="track-area"><div id="target" class="target"><span>目標 r</span></div><div class="belt"></div><div id="carriage" class="carriage"><span>台車</span><i></i><i></i></div><div class="ticks"><span>0 m</span><span>0.5 m</span><span>1 m</span></div></div>
 <div class="transport"><button id="play" class="primary">▶ 再生</button><button id="reset" class="secondary">↺ リセット</button><label>速度 <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label><output id="time">0.00 / 5.00 s</output></div><input id="scrub" aria-label="シミュレーション時刻" type="range" min="0" max="5000" step="1" value="0"><div id="status" role="status" class="status"></div></section>
 <section class="panel graphs"><div class="section-title"><h2>時間応答</h2><div class="legend"><span class="pd">● PD</span><span class="sf">┄ 状態FB</span><span class="cmd">┄ 指令力</span><span class="ref">┄ 目標位置</span></div></div><p id="difference" class="difference"></p><div class="chart"><canvas id="x-chart" aria-label="位置の時間応答、単位メートル" role="img"></canvas></div><div class="chart"><canvas id="v-chart" aria-label="速度の時間応答、単位メートル毎秒" role="img"></canvas></div><div class="chart"><canvas id="f-chart" aria-label="実入力と指令力の時間応答、単位ニュートン" role="img"></canvas></div><p class="caption">全5秒間の応答 · 縦線：再生時刻 · 指令力：選択中の方式</p></section></div></div>
 <section class="panel equations" aria-labelledby="equations-title">
@@ -57,7 +57,7 @@
 </div></div>
 </section>
 </section>
-<footer><span>robo-tat</span><span>ベル直シミュレーター</span></footer>
+<footer><span>robotat</span><span>ベル直シミュレーター</span></footer>
 </main>
 
 </body></html>
