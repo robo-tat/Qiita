@@ -1,0 +1,3 @@
+ブラウザでの確認
+Ctrl + Shift + P
+Integrated Browser
