@@ -37,8 +37,8 @@ python3 -m http.server 8000 --directory docs
 
 リポジトリの **Settings → Pages** で、**Deploy from a branch → main → /docs → Save** を選択します。デプロイ完了後のURLは以下です。
 
-- 一覧：`https://robo-tat.github.io/qiita/`
-- ベル直：`https://robo-tat.github.io/qiita/control-intro/`
+- 一覧：`https://robo-tat.github.io/Qiita/`
+- ベル直：`https://robo-tat.github.io/Qiita/control-intro/`
 
 `docs` は公開元フォルダー名であり、公開URLには入りません。
 
