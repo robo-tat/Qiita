@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ja">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>ベル直シミュレーター | robo-tat</title><link rel="stylesheet" href="./style.css?v=0d1286e73a38"><script defer src="./script.js?v=fa42c01478fd"></script></head>
+<body>
+<header><a class="brand" href="../index.html"><svg width="46" height="27" viewBox="0 0 46 27" aria-hidden="true"><path d="M10 5h26a9 9 0 0 1 0 18H10a9 9 0 0 1 0-18Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="10" cy="14" r="3" fill="currentColor"/><circle cx="36" cy="14" r="5" fill="none" stroke="currentColor" stroke-width="2"/></svg>robo-tat</a><a class="tag" href="../index.html">← 教材一覧</a></header>
+<main>
+<section class="intro"><h1>ベル直シミュレーター</h1><span class="eyebrow">BELT DRIVE / POSITION CONTROL</span></section>
+<div class="layout"><aside class="panel controls"><div class="section-title"><h2>パラメータ</h2><button id="defaults" class="text-button">初期値に戻す</button></div>
+<label class="field-title" for="mode">制御方法</label><select id="mode"><option value="pd">古典制御 / PD制御</option><option value="sf">現代制御 / 状態フィードバック</option></select>
+<h3>加速台と目標</h3><div id="plant-controls"></div><h3 id="gain-title">PD制御のゲイン</h3><div id="gain-controls"></div>
+<div class="compare-box"><label><input id="compare" type="checkbox" checked> 両方式の応答を重ねる</label><button id="equalize" class="secondary">選択中のゲインに揃える</button><p id="gain-summary"></p></div><p id="input-error" role="alert"></p></aside>
+<div class="results"><section class="panel stage-panel"><div class="section-title"><h2>加速台</h2><span class="badge">ストローク 0–1 m</span></div><div class="readings"><div><span>位置</span><strong id="position">0.000 <small>m</small></strong></div><div><span>速度</span><strong id="velocity">0.000 <small>m/s</small></strong></div><div><span>実入力</span><strong id="force">0.00 <small>N</small></strong></div></div><div class="track-area"><div id="target" class="target"><span>目標 r</span></div><div class="belt"></div><div id="carriage" class="carriage"><span>台車</span><i></i><i></i></div><div class="ticks"><span>0 m</span><span>0.5 m</span><span>1 m</span></div></div>
+<div class="transport"><button id="play" class="primary">▶ 再生</button><button id="reset" class="secondary">↺ リセット</button><label>速度 <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></label><output id="time">0.00 / 5.00 s</output></div><input id="scrub" aria-label="シミュレーション時刻" type="range" min="0" max="5000" step="1" value="0"><div id="status" role="status" class="status"></div></section>
+<section class="panel graphs"><div class="section-title"><h2>時間応答</h2><div class="legend"><span class="pd">● PD</span><span class="sf">┄ 状態FB</span><span class="cmd">┄ 指令力</span><span class="ref">┄ 目標位置</span></div></div><p id="difference" class="difference"></p><div class="chart"><canvas id="x-chart" aria-label="位置の時間応答、単位メートル" role="img"></canvas></div><div class="chart"><canvas id="v-chart" aria-label="速度の時間応答、単位メートル毎秒" role="img"></canvas></div><div class="chart"><canvas id="f-chart" aria-label="実入力と指令力の時間応答、単位ニュートン" role="img"></canvas></div><p class="caption">全5秒間の応答 · 縦線：再生時刻 · 指令力：選択中の方式</p></section></div></div>
+<section class="panel equations" aria-labelledby="equations-title">
+<div class="section-title"><h2 id="equations-title">モデル・制御式</h2></div>
+<div class="equation-grid">
+<section class="method-card" aria-labelledby="classical-title">
+<h3 id="classical-title">古典制御<span>伝達関数・PD制御</span></h3>
+<h4>モデル：入力 F → 出力 x</h4>
+<math display="block" aria-label="G(s) = X(s) / F(s) = 1 / (M s² + b s)"><mi>G</mi><mo>(</mo><mi>s</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>X</mi><mo>(</mo><mi>s</mi><mo>)</mo></mrow><mrow><mi>F</mi><mo>(</mo><mi>s</mi><mo>)</mo></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mi>M</mi><msup><mi>s</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>s</mi></mrow></mfrac></math>
+<h4>フィードバック量</h4>
+<div class="equation"><var>x</var>,　<var>v</var> = ẋ</div>
+<h4>PD制御（測定値の微分）</h4>
+<div class="equation"><var>e</var> = <var>r</var> − <var>x</var></div>
+<div class="equation"><var>u</var><sub>cmd</sub> = <var>K</var><sub>p</sub><var>e</var> − <var>K</var><sub>d</sub><var>v</var></div>
+</section>
+<section class="method-card" aria-labelledby="modern-title">
+<h3 id="modern-title">現代制御<span>状態方程式・状態フィードバック</span></h3>
+<h4>モデル：状態方程式（端点処理前）</h4>
+<div class="equation"><var>z</var> = [<var>x</var>, <var>v</var>]<sup>T</sup>　　ż = <var>Az</var> + <var>Bu</var></div>
+<math display="block" aria-label="z の時間微分 = [[0, 1], [0, −b/M]] z + [0, 1/M] 転置 u">
+<mover><mi>z</mi><mo>˙</mo></mover><mo>=</mo>
+<mrow><mo>[</mo><mtable><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>0</mn></mtd><mtd><mo>−</mo><mfrac><mi>b</mi><mi>M</mi></mfrac></mtd></mtr></mtable><mo>]</mo></mrow><mi>z</mi><mo>+</mo>
+<mrow><mo>[</mo><mtable><mtr><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mfrac><mn>1</mn><mi>M</mi></mfrac></mtd></mtr></mtable><mo>]</mo></mrow><mi>u</mi>
+</math>
+<h4>観測量：位置・速度</h4>
+<div class="equation"><var>y</var> = <var>Cz</var> = <var>z</var>　(<var>C</var> = <var>I</var><sub>2</sub>)</div>
+<h4>状態フィードバック</h4>
+<div class="equation"><var>u</var><sub>cmd</sub> = −[<var>K</var><sub>x</sub>, <var>K</var><sub>v</sub>]<var>z</var> + <var>K</var><sub>x</sub><var>r</var><br>= <var>K</var><sub>x</sub>(<var>r</var> − <var>x</var>) − <var>K</var><sub>v</sub><var>v</var></div>
+</section>
+</div>
+<section class="equation-common" aria-labelledby="common-title">
+<h3 id="common-title">共通</h3>
+<div class="common-grid"><div>
+<h4>記号・単位</h4>
+<dl class="symbols">
+<div><dt>x</dt><dd>位置 [m]</dd></div><div><dt>v</dt><dd>速度 [m/s]</dd></div>
+<div><dt>u = F</dt><dd>実入力 [N]</dd></div><div><dt>r</dt><dd>目標位置 [m]</dd></div>
+<div><dt>M</dt><dd>等価質量 [kg]</dd></div><div><dt>b</dt><dd>粘性抵抗 [N s/m]</dd></div>
+</dl>
+</div><div>
+<h4>入力飽和</h4>
+<div class="equation"><var>u</var> = <var>F</var> = clamp(<var>u</var><sub>cmd</sub>, −<var>F</var><sub>max</sub>, <var>F</var><sub>max</sub>)</div>
+<h4>一致条件（同じ初期値・目標・制約）</h4>
+<div class="equation equivalence"><var>K</var><sub>x</sub> = <var>K</var><sub>p</sub>, <var>K</var><sub>v</sub> = <var>K</var><sub>d</sub>　⇒　<var>u</var><sub>PD</sub>(<var>t</var>) = <var>u</var><sub>SF</sub>(<var>t</var>)</div>
+</div></div>
+</section>
+</section>
+<footer><span>robo-tat</span><span>ベル直シミュレーター</span></footer>
+</main>
+
+</body></html>
