@@ -1,3 +1,6 @@
 ブラウザでの確認
 Ctrl + Shift + P
 Integrated Browser
+
+Qiita プレビュー
+npx qiita preview
